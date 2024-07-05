@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from "macros.html" import thread_table, page_nav with context %}
+
+{% block content %}
+    <h1 class="text-center p-4">Statistics</h1>
+    <div class="card">
+        <div class="card-header">
+            General
+        </div>
+        <div class="card-body">
+            <p>Number of Users: {{ users_count }}</p>
+            <p>Number of Threads: {{ threads_count }}</p>
+            <p>Number of Posts: {{ posts_count }}</p>
+        </div>
+    </div>
+{% endblock %}

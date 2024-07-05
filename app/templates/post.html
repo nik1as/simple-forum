@@ -1,0 +1,39 @@
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+                <span>
+                <a class="text-decoration-none"
+                   href="{{ url_for('main.user', username=post.author.username) }}">{{ post.author.username }}
+                </a> {{ moment(post.timestamp).fromNow() }}
+                </span>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                <i class="bi bi-gear"></i>
+            </button>
+            <ul class="dropdown-menu">
+                {% if post.author.id == current_user.id %}
+                    <li><a href="{{ url_for('main.edit_post', id=post.id) }}"
+                           class="dropdown-item">Edit Post</a>
+                    </li>
+                    <li><a href="{{ url_for('main.delete_post', id=post.id) }}"
+                           class="dropdown-item">Delete Post</a>
+                    </li>
+                {% elif current_user.admin %}
+                    <li><a href="{{ url_for('main.delete_post', id=post.id) }}"
+                           class="dropdown-item">Delete Post</a>
+                    </li>
+                    <li><a href="{{ url_for('main.report', id=post.id) }}"
+                           class="dropdown-item">Report Post</a>
+                    </li>
+                {% else %}
+                    <li><a href="{{ url_for('main.report', id=post.id) }}"
+                           class="dropdown-item">Report Post</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+        <p>{{ post.body | safe }}</p>
+    </div>
+</div>

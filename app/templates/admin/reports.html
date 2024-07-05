@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "macros.html" import thread_table, page_nav with context %}
+
+{% block content %}
+    <h1 class="text-center p-4">Reports</h1>
+    {% for report in page.items %}
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>
+                <a class="text-decoration-none"
+                   href="{{ url_for('main.user', username=report.post.author.username) }}">{{ report.post.author.username }}
+                </a> {{ moment(report.post.timestamp).fromNow() }}
+                </span>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        <i class="bi bi-gear"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('main.delete_post', id=report.post.id) }}"
+                               class="dropdown-item">Delete Post</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <p>{{ report.post.body | safe }}</p>
+            </div>
+            <div class="card-footer text-body-secondary">
+                <strong>Reason:</strong> {{ report.reason }}
+            </div>
+        </div>
+    {% endfor %}
+    <br/>
+    {{ page_nav(page, 'admin.reports') }}
+{% endblock %}

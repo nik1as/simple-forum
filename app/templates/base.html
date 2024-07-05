@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>simple-forum</title>
+    {% endif %}
+    {{ pagedown.html_head() }}
+    {{ moment.include_moment() }}
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true
+          },
+          config: ["MMLorHTML.js"],
+          jax: ["input/TeX", "output/HTML-CSS", "output/NativeMML"],
+          extensions: ["MathMenu.js", "MathZoom.js"]
+        });
+    </script>
+    <script type="text/javascript"
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <style>
+        code {
+            white-space: pre-wrap
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand px-2" href="#">SF</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item px-2"><a class="nav-link" href="{{ url_for('main.index') }}">Home</a></li>
+                    {% if current_user.is_anonymous %}
+                        <li class="nav-item px-2">
+                            <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item px-2">
+                            <a class="nav-link" href="{{ url_for('main.new_thread') }}">New Thread</a>
+                        </li>
+                        <li class="nav-item px-2">
+                            <a class="nav-link" href="{{ url_for('main.user', username=current_user.username) }}">Profile</a>
+                        </li>
+                        {% if current_user.admin %}
+                            <li class="nav-item px-2">
+                                <a class="nav-link" href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item px-2">
+                            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <form class="d-flex" role="search" action="{{ url_for('main.search') }}" method="get">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Search"
+                           aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-info" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+</html>

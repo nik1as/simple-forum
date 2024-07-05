@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="text-center p-4">{{ user.username }}</h1>
+
+    <div class="card">
+        <div class="card-header">
+            Information
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-8">
+                    <p class="card-text">
+                        {% if user.id == current_user.id %}
+                            <strong>E-Mail:</strong> {{ user.email }}<br/>
+                        {% endif %}
+                        {% if user.about_me %}
+                            <strong>About me:</strong> {{ user.about_me }}<br/>
+                        {% endif %}
+                        {% if user.last_seen %}
+                            <strong>Last seen on:</strong> {{ moment(user.last_seen).format('LLL') }}<br/>
+                        {% endif %}
+                        {% if user.joined %}
+                            <strong>Joined on:</strong> {{ moment(user.joined).format('LLL') }}<br/>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-4">
+                    <img src="{{ user.avatar() }}" class="rounded float-end me-4" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if user == current_user %}
+        <br/>
+        <div class="card">
+            <div class="card-header">
+                Settings
+            </div>
+            <div class="card-body">
+                <p><a class="text-decoration-none" href="{{ url_for('auth.edit_profile') }}">Edit your profile</a>
+                </p>
+                <p><a class="text-decoration-none" href="{{ url_for('auth.change_password') }}">Change your
+                    password</a></p>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

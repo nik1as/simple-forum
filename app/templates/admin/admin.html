@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% from "macros.html" import thread_table, page_nav with context %}
+
+{% block content %}
+    <div class="container text-center my-5">
+        <div class="row">
+            <div class="col card p-3 m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <a href="{{ url_for('admin.users') }}" class="card-link text-decoration-none">Users</a>
+                    </h2>
+                </div>
+            </div>
+            <div class="col card p-3 m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <a href="{{ url_for('admin.statistics') }}" class="card-link text-decoration-none">Statistics</a>
+                    </h2>
+                </div>
+            </div>
+            <div class="col card p-3 m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <a href="{{ url_for('admin.reports') }}" class="card-link text-decoration-none">Reports</a>
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col card p-3 m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <a href="#" class="card-link text-decoration-none">TODO</a>
+                    </h2>
+                </div>
+            </div>
+            <div class="col card p-3 m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <a href="#" class="card-link text-decoration-none">TODO</a>
+                    </h2>
+                </div>
+            </div>
+            <div class="col card p-3 m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <a href="#" class="card-link text-decoration-none">TODO</a>
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col card p-3 m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <a href="#" class="card-link text-decoration-none">TODO</a>
+                    </h2>
+                </div>
+            </div>
+            <div class="col card p-3 m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <a href="#" class="card-link text-decoration-none">TODO</a>
+                    </h2>
+                </div>
+            </div>
+            <div class="col card p-3 m-2" style="width: 18rem;">
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <a href="#" class="card-link text-decoration-none">TODO</a>
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

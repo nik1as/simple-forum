@@ -1,0 +1,156 @@
+{% macro thread_table(threads) %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Topic</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Posts</th>
+            <th scope="col">Last Post</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for thread in threads %}
+            <tr>
+                <td><a class="text-decoration-none"
+                       href="{{ url_for('main.thread', id=thread.id) }}">{{ thread.title }}</a></td>
+                <td><a class="text-decoration-none"
+                       href="{{ url_for('main.user', username=thread.user.username) }}">{{ thread.user.username }}</a>
+                </td>
+                <td>{{ thread.posts_count() }}</td>
+                {% with last_post = thread.last_post() %}
+                    <td>{{ moment(last_post.timestamp).fromNow() }} by
+                        <a class="text-decoration-none"
+                           href="{{ url_for('main.user', username=last_post.author.username) }}">{{ last_post.author.username }}</a>
+                    </td>
+                {% endwith %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}
+
+{% macro form_field(field, autofocus) %}
+    {%- if field.type == 'BooleanField' %}
+        <div class="form-check mb-3">
+            {{ field(class='form-check-input') }}
+            {{ field.label(class='form-check-label') }}
+        </div>
+    {%- elif field.type == 'RadioField' %}
+        {{ field.label(class='form-label') }}
+        {%- for item in field %}
+            <div class="form-check{% if loop.last %} mb-3{% endif %}">
+                {{ item(class='form-check-input') }}
+                {{ item.label(class='form-check-label') }}
+            </div>
+        {%- endfor %}
+    {%- elif field.type == 'SelectField' %}
+        {{ field.label(class='form-label') }}
+        {{ field(class='form-select mb-3') }}
+    {%- elif field.type == 'TextAreaField' or field.type == 'PageDownField' %}
+        <div class="mb-3">
+            {{ field.label(class='form-label') }}
+            {% if autofocus %}
+                {{ field(class='form-control res' + (' is-invalid' if field.errors else ''), autofocus=True, rows=10, style='resize: none;') }}
+            {% else %}
+                {{ field(class='form-control' + (' is-invalid' if field.errors else ''), rows=10, style='resize: none;') }}
+            {% endif %}
+            {%- for error in field.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {%- endfor %}
+        </div>
+    {%- elif field.type == 'SubmitField' %}
+        {{ field(class='btn btn-primary mb-3') }}
+    {%- else %}
+        <div class="mb-3">
+            {{ field.label(class='form-label') }}
+            {% if autofocus %}
+                {{ field(class='form-control' + (' is-invalid' if field.errors else ''), autofocus=True) }}
+            {% else %}
+                {{ field(class='form-control' + (' is-invalid' if field.errors else '')) }}
+            {% endif %}
+            {%- for error in field.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+            {%- endfor %}
+        </div>
+    {%- endif %}
+{% endmacro %}
+
+{% macro quick_form(form, action="", method="post", id="", enctype="", novalidate=False) %}
+    <form novalidate
+            {%- if action != None %} action="{{ action }}"{% endif -%}
+            {%- if method %} method="{{ method }}"{% endif %}
+            {%- if id %} id="{{ id }}"{% endif -%}
+            {%- if enctype -%} enctype="{{ enctype }}" {% endif %}
+            {%- if novalidate %} novalidate{% endif -%}>
+        {{ form.hidden_tag() }}
+        {%- for field, errors in form.errors.items() %}
+            {%- if form[field].widget.input_type == 'hidden' %}
+                {%- for error in errors %}
+                    <div class="invalid-feedback">{{ error }}</div>
+                {%- endfor %}
+            {%- endif %}
+        {%- endfor %}
+
+        {% set ns = namespace(first_field=true) %}
+        {%- for field in form %}
+            {% if field.widget.input_type != 'hidden' -%}
+                {{ form_field(field, ns.first_field) }}
+                {% set ns.first_field = false %}
+            {%- endif %}
+        {%- endfor %}
+    </form>
+{% endmacro %}
+
+{% macro page_nav(page, endpoint) %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if page.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for(endpoint, page=page.prev_num, **kwargs) }}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link disabled" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% for number in page.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                {% if number %}
+                    {% if page.page != number %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for(endpoint, page=number, **kwargs) }}">{{ number }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item active" aria-current="page">
+                            <a class="page-link" href="#">{{ number }}</a>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link">{{ '...' }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for(endpoint, page=page.next_num, **kwargs) }}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link disabled" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endmacro %}

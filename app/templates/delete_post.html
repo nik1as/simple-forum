@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% from "macros.html" import quick_form with context %}
+
+{% block content %}
+    <h1 class="text-center p-4">Delete Post</h1>
+    {% include 'post.html' %}
+    <br/>
+    {{ quick_form(form) }}
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% from "macros.html" import quick_form with context %}
+
+{% block content %}
+    <h1 class="text-center p-4">Sign In</h1>
+    {{ quick_form(form) }}
+    <p><a href="{{ url_for('auth.register') }}">Register!</a></p>
+{% endblock %}

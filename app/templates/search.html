@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from "macros.html" import thread_table, page_nav with context %}
+
+{% block content %}
+    {% if page.items %}
+        <h1 class="text-center p-4"> Search results for {{ query }}:</h1>
+        {{ thread_table(page.items) }}
+        {{ page_nav(page, 'main.search', query=query) }}
+    {% else %}
+        <h1 class="text-center p-4">No matching threads found!</h1>
+    {% endif %}
+{% endblock %}

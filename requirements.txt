@@ -1,0 +1,12 @@
+flask
+flask-wtf
+flask-sqlalchemy
+flask-migrate
+flask-login
+flask-moment
+flask-pagedown
+email-validator
+markdown
+python-markdown-math
+nh3
+pillow

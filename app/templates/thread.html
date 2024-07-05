@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% from "macros.html" import thread_table, page_nav, quick_form with context %}
+
+{% block content %}
+    <h1 class="text-center p-4">{{ thread.title }}</h1>
+    {% for post in page.items %}
+        <br/>
+        {% include 'post.html' %}
+    {% endfor %}
+    <br/>
+    {% if current_user.is_authenticated %}
+        {{ quick_form(form, url_for('main.new_post', thread=thread.id)) }}
+    {% endif %}
+    <br/>
+    {{ page_nav(page, 'main.thread', id=thread.id) }}
+{% endblock %}

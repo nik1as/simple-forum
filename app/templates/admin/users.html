@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "macros.html" import thread_table, page_nav with context %}
+
+{% block content %}
+    <table class="table my-5">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">E-Mail</th>
+            <th scope="col">Admin</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in page.items %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td><a class="text-decoration-none"
+                       href="{{ url_for('main.user', username=user.username) }}">{{ user.username }}</a></td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.admin }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {{ page_nav(page, 'main.users') }}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "macros.html" import thread_table, page_nav with context %}
+
+{% block content %}
+    {% if current_user.is_authenticated %}
+        <h1 class="text-center p-4">Hi, {{ current_user.username }}!</h1>
+    {% else %}
+        <div class="mt-5"></div>
+    {% endif %}
+
+    {{ thread_table(page.items) }}
+    <br/>
+    {{ page_nav(page, 'main.index') }}
+{% endblock %}
