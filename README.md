@@ -2,28 +2,18 @@
 
 A simple forum web application build with flask and bootstrap.
 
-Default credentials: ``admin:admin``
+Default credentials: `admin:admin`
 
 ![](img/home.png)
 
 ![](img/thread.png)
 
-## Install requirements
-
-Create a virtual environment and install the requirements:
+## Docker
 
 ````shell
-python -m venv .venv
-pip install -r requirements.txt
+docker build -t simple_forum .
+docker run --name simple_forum -d -p 8000:5000 -t simple_forum:latest
 ````
-
-## Create database
-
-```shell
-flask db init
-flask db migrate -m "init"
-flask db upgrade
-```
 
 ## Features
 

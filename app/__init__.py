@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_login import LoginManager
-from flask_migrate import Migrate
 from flask_moment import Moment
 from flask_pagedown import PageDown
 from flask_sqlalchemy import SQLAlchemy
@@ -9,7 +8,6 @@ from sqlalchemy import Engine, event
 from config import Config
 
 db = SQLAlchemy()
-migrate = Migrate()
 pagedown = PageDown()
 login = LoginManager()
 login.login_view = 'login'
@@ -22,7 +20,6 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
 
     db.init_app(app)
-    migrate.init_app(app, db)
     pagedown.init_app(app)
     login.init_app(app)
     moment.init_app(app)
