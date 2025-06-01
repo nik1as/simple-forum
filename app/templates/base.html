@@ -26,8 +26,17 @@
           extensions: ["MathMenu.js", "MathZoom.js"]
         });
     </script>
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
     <script type="text/javascript"
-            src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js">
+            id="MathJax-script"
+            async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.min.js">
     </script>
     <style>
         code {
@@ -69,11 +78,13 @@
                         </li>
                     {% endif %}
                 </ul>
+
                 <form class="d-flex" role="search" action="{{ url_for('main.search') }}" method="get">
                     <input class="form-control me-2" type="search" name="query" placeholder="Search"
                            aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
+
                 <div class="form-check form-switch ms-2">
                     <input class="form-check-input" type="checkbox" id="dark-mode-toggle" checked>
                     <label class="form-check-label" for="dark-mode-toggle">Dark Mode</label>
